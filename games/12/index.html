@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3e8">
+  <title>Panda Panic! — Voxel Survival</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="three.min.js"></script>
+  <script defer src="game.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./index.html"><span class="brand-icon" aria-hidden="true">🍍</span> BAMBOO ARCADE</a>
+      <button id="help" class="help"><span>?</span> How to play</button>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="intro" aria-labelledby="title">
+      <div class="eyebrow"><i></i> THE BAMBOO GROVE</div>
+      <h1 id="title">PANDA PANIC<span>!</span></h1>
+      <p>Build a shelter, dodge flying pineapples, and defend your patch of jungle.</p>
+    </section>
+    <section class="game-shell" aria-label="Panda Panic game">
+      <div class="game-bar">
+        <div><i></i> <strong>SURVIVAL</strong><span class="bar-divider"></span><span class="world-name">Bamboo Grove</span></div>
+        <div><button id="sound" aria-label="Turn sound on" aria-pressed="false" title="Toggle sound">♫</button><button id="fullscreen" aria-label="Toggle fullscreen" title="Toggle fullscreen">⛶</button></div>
+      </div>
+      <div id="arena" class="arena">
+        <div id="view" class="view"></div>
+        <div class="shade"></div>
+        <div class="hud hud-health"><small>HEALTH</small><div id="hearts" aria-live="polite">♥ ♥ ♥ ♥ ♥</div></div>
+        <div class="hud hud-wave"><small>PANDAS LEFT</small><strong id="remaining">03</strong></div>
+        <div id="crosshair" class="crosshair" hidden>+</div>
+        <div id="flash"></div>
+        <div id="overlay" class="overlay">
+          <div class="launch">
+            <div class="launch-tag"><i></i> VOXEL SURVIVAL</div>
+            <h2 id="overlay-title">Enter the grove</h2>
+            <p id="overlay-copy">The pandas aren’t here to make friends.</p>
+            <button id="play" class="play">▶ <span>PLAY GAME</span></button>
+          </div>
+        </div>
+        <div id="touch" class="touch" hidden>
+          <div id="stick" class="stick"><div id="knob"></div></div>
+          <div class="touch-actions"><button data-action="jump" aria-label="Jump">↑</button><button data-action="place" aria-label="Place block">＋</button><button data-action="act" aria-label="Use tool">⚒</button><button data-action="pause" aria-label="Pause">Ⅱ</button></div>
+        </div>
+        <div class="inventory" aria-label="Inventory">
+          <span id="item-name" class="item-name">WOODEN SWORD</span>
+          <div id="slots" class="slots">
+            <button data-slot="0" class="selected" aria-label="Wooden sword"><kbd>1</kbd><span class="pixel sword"></span></button>
+            <button data-slot="1" aria-label="Pickaxe"><kbd>2</kbd><span class="pixel pickaxe"></span></button>
+            <button data-slot="2" aria-label="Shield"><kbd>3</kbd><span class="pixel shield"></span></button>
+            <button data-slot="3" aria-label="Bamboo planks"><kbd>4</kbd><span class="pixel plank"></span><b id="planks">24</b></button>
+            <button data-slot="4" aria-label="Stone"><kbd>5</kbd><span class="pixel stone"></span><b id="stones">16</b></button>
+          </div>
+        </div>
+        <div id="notice" class="notice" role="status"></div>
+      </div>
+    </section>
+    <div class="controls desktop-guide" aria-label="Desktop controls">
+      <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> Move</span>
+      <span><kbd>SPACE</kbd> Jump</span>
+      <span><kbd>LMB</kbd> Use tool</span>
+      <span><kbd>RMB</kbd> Place block</span>
+      <span><kbd>1–5</kbd> Select item</span>
+    </div>
+    <div class="controls mobile-guide">Use the stick to move. Drag the scene to look.</div>
+  </main>
+  <dialog id="instructions">
+    <form method="dialog"><button class="close" aria-label="Close instructions">×</button></form>
+    <div class="eyebrow"><i></i> FIELD GUIDE</div>
+    <h2>How to play</h2>
+    <p>Defeat all three pandas before their pineapples cost you all five hearts.</p>
+    <ul>
+      <li><strong>Sword</strong> — strike pandas at close range.</li>
+      <li><strong>Pickaxe</strong> — break blocks and collect building materials.</li>
+      <li><strong>Shield</strong> — select it to block incoming pineapples from the front.</li>
+      <li><strong>Planks and stone</strong> — select a block and place it to build cover.</li>
+    </ul>
+    <p><strong>Desktop</strong> Use WASD to move, mouse to look, Space to jump, left click to use a tool, and right click to place. Press 1–5 to select and Esc to pause.</p>
+    <p><strong>Touch</strong> Move with the stick, drag the scene to look, tap the hotbar to equip an item, and use the on-screen action buttons.</p>
+  </dialog>
+</body>
+</html>

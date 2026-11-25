@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Benchmark results</title>
+<style>
+  :root { --bg: #0f1216; --panel: #181d24; --line: #2a323d; --text: #e6e9ee; --dim: #98a2b3; --accent: #7bd88f; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  header, main { max-width: 1200px; margin: 0 auto; padding: 20px 16px; }
+  h1 { margin: 0 0 6px; font-size: 28px; }
+  h2 { margin: 28px 0 8px; font-size: 20px; }
+  p { margin: 6px 0; }
+  .dim { color: var(--dim); }
+  .prompt { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; white-space: pre-wrap; margin: 10px 0 4px; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 14px 0; }
+  .bar label { color: var(--dim); font-size: 14px; }
+  select, button, a.button { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; cursor: pointer; text-decoration: none; display: inline-block; min-height: 40px; }
+  button:hover, a.button:hover, select:hover { border-color: var(--accent); }
+  button.primary { background: var(--accent); color: #08110b; border-color: var(--accent); font-weight: 600; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .card h3 { margin: 0; font-size: 18px; word-break: break-word; }
+  .place { display: inline-block; min-width: 30px; text-align: center; background: var(--accent); color: #08110b; border-radius: 6px; padding: 0 6px; font-weight: 700; margin-right: 6px; }
+  .facts { color: var(--dim); font-size: 14px; }
+  .note { font-size: 14px; border-left: 3px solid var(--line); padding-left: 8px; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; }
+  dialog { border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--text); padding: 0; width: min(1280px, 100vw); max-width: 100vw; height: min(860px, 100dvh); max-height: 100dvh; }
+  dialog::backdrop { background: rgba(0, 0, 0, .7); }
+  .top { display: flex; gap: 8px; align-items: center; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  .top strong { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  iframe { width: 100%; height: calc(100% - 58px); border: 0; background: #000; display: block; }
+  footer { max-width: 1200px; margin: 0 auto; padding: 24px 16px 40px; color: var(--dim); font-size: 14px; }
+</style>
+</head>
+<body>
+<header>
+  <h1 id="name">Benchmark results</h1>
+  <p class="dim" id="about"></p>
+</header>
+<main id="main"><p class="dim">Loading the results.</p></main>
+<footer id="foot"></footer>
+
+<dialog id="player">
+  <div class="top">
+    <strong id="playing"></strong>
+    <button id="again">Load again</button>
+    <a class="button" id="tab" target="_blank" rel="noopener">Open in a new tab</a>
+    <button id="close">Close</button>
+  </div>
+  <iframe id="frame" title="The game" sandbox="allow-scripts allow-pointer-lock allow-modals allow-forms" allow="fullscreen; gamepad; accelerometer; gyroscope"></iframe>
+</dialog>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const el = (tag, props = {}, ...kids) => { const n = Object.assign(document.createElement(tag), props); for (const k of kids) n.append(k); return n; };
+const time = (s) => (s == null ? null : s < 90 ? `${Math.round(s)} s` : `${Math.round(s / 60)} min`);
+const count = (n) => (n == null ? null : n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}k` : String(n));
+
+function play(game) {
+  $("playing").textContent = game.model;
+  $("tab").href = game.path;
+  $("frame").src = game.path;
+  $("player").showModal();
+}
+$("close").onclick = () => $("player").close();
+$("player").addEventListener("close", () => { $("frame").src = "about:blank"; });
+$("again").onclick = () => { const src = $("tab").getAttribute("href"); $("frame").src = "about:blank"; setTimeout(() => { $("frame").src = src; }, 50); };
+
+function card(game) {
+  const facts = [game.harness, game.date, time(game.seconds) && `built in ${time(game.seconds)}`, count((game.tokens_in ?? 0) + (game.tokens_out ?? 0)) && game.tokens_in != null && `${count(game.tokens_in + (game.tokens_out ?? 0))} tokens`].filter(Boolean).join(" · ");
+  const title = el("h3", {}, ...(game.place != null ? [el("span", { className: "place", textContent: `#${game.place}`, title: "The place in the ranking" })] : []), game.model);
+  const node = el("div", { className: "card" }, title, el("div", { className: "facts", textContent: facts }));
+  if (game.note) node.append(el("div", { className: "note", textContent: game.note }));
+  const playButton = el("button", { className: "primary", textContent: "Play" });
+  playButton.onclick = () => play(game);
+  node.append(el("div", { className: "row" }, playButton, el("a", { className: "button", href: game.path, target: "_blank", rel: "noopener", textContent: "Open in a new tab" })));
+  return node;
+}
+
+function show(data) {
+  document.title = data.name;
+  $("name").textContent = data.name;
+  $("about").textContent = data.about;
+  const main = $("main");
+  main.textContent = "";
+  for (const task of data.tasks) {
+    const section = el("section");
+    if (data.tasks.length > 1) section.append(el("h2", { textContent: task.title }));
+    if (task.prompt) section.append(el("p", { className: "dim", textContent: "Each model got this task, and nothing else:" }), el("div", { className: "prompt", textContent: task.prompt.trim() }));
+    const order = el("select");
+    for (const [value, label] of [["rank", "Ranking, then newest"], ["model", "Model name"], ["new", "Newest first"], ["fast", "Fastest build"]]) order.append(el("option", { value, textContent: label }));
+    const grid = el("div", { className: "grid" });
+    const draw = () => {
+      const games = [...task.games];
+      const by = { rank: (a, b) => (a.place ?? 1e9) - (b.place ?? 1e9) || b.run - a.run || a.id - b.id, model: (a, b) => a.model.localeCompare(b.model) || b.run - a.run, new: (a, b) => b.run - a.run || a.id - b.id, fast: (a, b) => (a.seconds ?? 1e9) - (b.seconds ?? 1e9) }[order.value];
+      grid.replaceChildren(...games.sort(by).map(card));
+    };
+    order.onchange = draw;
+    section.append(el("div", { className: "bar" }, el("label", { textContent: `${task.games.length} results` + (task.ranked ? `, ${task.ranked} ranked by hand` : "") }), el("label", { textContent: "Order:" }), order), grid);
+    main.append(section);
+    draw();
+  }
+  $("foot").textContent = `Made on ${data.made}. Each game is the unchanged output of one model in one run: it can be rough, slow or broken. A game runs in a frame without access to this page. "Open in a new tab" works best on a phone.`;
+}
+
+fetch("games.json").then((r) => r.json()).then(show).catch(() => { $("main").textContent = "The results could not be loaded."; });
+</script>
+</body>
+</html>

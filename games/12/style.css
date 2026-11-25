@@ -1,0 +1,86 @@
+:root{color-scheme:light;--ink:#202d24;--paper:#f7f5eb;--gold:#ffd25e;--green:#416b48}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 50% 20%,#fdfbf3 0%,var(--paper) 73%);color:var(--ink);font:15px system-ui,sans-serif;min-height:100vh}
+button,a{-webkit-tap-highlight-color:transparent}
+button{cursor:pointer;font:inherit}
+button:focus-visible,a:focus-visible{outline:3px solid #dda72b;outline-offset:4px}
+[hidden]{display:none!important}
+.wrap{width:min(1120px,calc(100% - 72px));margin-inline:auto}
+.site-header{height:66px;border-bottom:1px solid #dfdfd1}
+.header-inner{height:100%;display:flex;justify-content:space-between;align-items:center}
+.brand{color:inherit;text-decoration:none;font-size:13px;font-weight:900;letter-spacing:.17em;display:flex;align-items:center;gap:11px}
+.brand-icon{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:#283f30;font-size:19px;letter-spacing:0}
+.help{border:1px solid #d9dccd;background:#fbfaf2;color:#33473a;border-radius:7px;padding:7px 12px;font-size:12px;font-weight:750;display:flex;align-items:center;gap:7px}
+.help span{display:grid;place-items:center;border:1.5px solid currentColor;border-radius:50%;width:15px;height:15px;font-size:10px}
+.intro{text-align:center;padding:32px 0 25px}
+.eyebrow{font-size:10px;color:#4c6b50;font-weight:850;letter-spacing:.22em;display:flex;justify-content:center;align-items:center;gap:8px}
+.eyebrow i,.launch-tag i{width:7px;height:7px;background:#78a65e;display:inline-block;transform:rotate(45deg)}
+h1{font-family:Impact,"Arial Black",system-ui,sans-serif;font-weight:1000;font-size:clamp(48px,7.4vw,101px);line-height:.96;letter-spacing:-.045em;margin:10px 0 9px;text-shadow:0 3px #dce1ce}
+h1 span{color:#e6a623;text-shadow:0 3px #e4c77d}
+.intro p{margin:0;color:#546052;font-size:14px}
+.game-shell{border:1px solid #283b2e;border-radius:13px;overflow:hidden;box-shadow:0 12px 28px #29342624;background:#203427}
+.game-bar{height:38px;background:#21372a;color:#f5f4e6;display:flex;justify-content:space-between;align-items:center;padding:0 13px;font-size:11px}
+.game-bar>div{display:flex;align-items:center;gap:9px}
+.game-bar strong{font-size:10px;letter-spacing:.14em}
+.game-bar i{width:7px;height:7px;border-radius:50%;background:#a7cf75;box-shadow:0 0 8px #a7cf7566}
+.bar-divider{width:1px;height:13px;background:#536859;margin:0 2px}
+.world-name{color:#d1dfca}
+.game-bar button{border:0;background:#ffffff0c;color:white;width:29px;height:26px;border-radius:5px;font-size:17px;line-height:1}
+.game-bar button:hover,.slots button:hover{background:#ffffff26}
+.arena{position:relative;isolation:isolate;height:clamp(430px, min(46vw, calc(100svh - 320px)), 630px);overflow:hidden;background:#8faa78;touch-action:none;color:white}
+.view,.shade,.overlay,#flash{position:absolute;inset:0}
+.view canvas{display:block;width:100%;height:100%;touch-action:none}
+.shade{pointer-events:none;background:linear-gradient(180deg,#14251c60,transparent 29%,transparent 66%,#0c211dd0)}
+.hud{position:absolute;top:16px;padding:8px 11px;background:#182b22d9;border:1px solid #ffffff32;border-radius:7px;pointer-events:none}
+.hud-health{left:16px}
+.hud-wave{right:16px;text-align:right}
+.hud small{display:block;font-size:9px;font-weight:850;letter-spacing:.13em;color:#f3f2dd}
+#hearts{color:#ff8274;letter-spacing:.08em;white-space:nowrap;font-size:18px;line-height:1.12}
+#hearts .lost{color:#7b8a7e}
+.hud strong{color:#ffdb73;font:900 19px/1.1 ui-monospace,monospace}
+.overlay{display:grid;place-items:center;background:#12291f24;text-align:center;padding:10px;z-index:2}
+.launch{background:#192d21eb;border:1px solid #d9ebbf40;border-radius:13px;padding:22px 32px 25px;box-shadow:0 12px 40px #071c1b65;min-width:min(340px,100%);backdrop-filter:blur(5px);transform:translateY(-30%)}
+.launch-tag{font-size:9px;font-weight:850;letter-spacing:.2em;color:#c7dda7;display:flex;justify-content:center;align-items:center;gap:8px}
+.launch h2,.launch p{margin:0}
+.launch h2{font-size:clamp(25px,3.8vw,37px);font-weight:950;letter-spacing:-.045em;margin:5px 0}
+.launch p{color:#e0e8d9;font-size:13px}
+.play{color:#263421;background:var(--gold);border:0;border-radius:7px;box-shadow:0 4px #bd8826;margin-top:18px;padding:11px 23px;font-size:12px;letter-spacing:.12em;font-weight:950;display:inline-flex;gap:10px;align-items:center}
+.play:hover{background:#ffe18b}
+.inventory{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);text-align:center;z-index:3}
+.item-name{display:inline-block;margin-bottom:6px;color:#fff8dc;text-shadow:0 1px 3px #152319;font-size:9px;font-weight:900;letter-spacing:.13em;white-space:nowrap}
+.slots{display:flex;align-items:center;gap:4px;background:#182b22db;border:1px solid #ffffff38;border-radius:8px;padding:4px}
+.slots button{width:44px;height:43px;position:relative;border:1px solid #ffffff23;border-radius:4px;background:#ffffff0a;color:white;display:grid;place-items:center;padding:0}
+.slots button.selected{border:2px solid #ffdc78;background:#77714262}
+.slots kbd,.slots b{position:absolute;font:700 9px ui-monospace,monospace}
+.slots kbd{top:2px;left:4px;color:#d5ddcf}.slots b{bottom:2px;right:3px}
+.pixel{display:block;width:24px;height:24px;filter:drop-shadow(1px 2px #0006)}
+.sword{background:#e6b674;clip-path:polygon(30% 64%,69% 25%,69% 10%,92% 10%,92% 34%,48% 76%,53% 83%,45% 92%,33% 79%,19% 95%,8% 84%,22% 70%,10% 58%,19% 49%)}
+.pickaxe{background:linear-gradient(140deg,#c3d9cc 0 44%,#aa7645 44% 75%,#e1b878 75%);clip-path:polygon(12% 13%,72% 13%,95% 36%,95% 67%,81% 67%,81% 43%,70% 33%,20% 94%,6% 81%,53% 28%,12% 28%)}
+.shield{background:linear-gradient(90deg,#d9b677 13%,#876041 13% 44%,#e2c388 44% 56%,#a8794a 56% 87%,#d9b677 87%);clip-path:polygon(8% 8%,92% 8%,92% 62%,76% 83%,50% 98%,24% 83%,8% 62%)}
+.plank,.stone{width:19px;height:19px;transform:rotate(-30deg) skew(9deg);border:2px solid #0002}
+.plank{background:repeating-linear-gradient(#dfb167 0 4px,#a87638 4px 6px)}
+.stone{background:linear-gradient(35deg,#687875 29%,#a4aaa0 30% 58%,#879591 59%);box-shadow:2px 2px #52635f}
+.controls{display:flex;justify-content:center;align-items:center;gap:23px;color:#526052;padding:16px 0 22px;font-size:12px;flex-wrap:wrap}
+.controls span{white-space:nowrap}
+.controls kbd{background:#eeeee2;border:1px solid #dadbcd;border-bottom-width:2px;border-radius:4px;padding:2px 4px;margin-right:3px;color:#344a3b;font:750 10px ui-monospace,monospace}
+.mobile-guide{display:none}
+.crosshair{position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%);font-size:29px;line-height:1;text-shadow:0 1px 3px black;pointer-events:none}
+#flash{pointer-events:none;box-shadow:inset 0 0 78px 13px #ff5132;opacity:0;transition:opacity .25s}
+.notice{position:absolute;left:50%;top:15px;transform:translateX(-50%);background:#182b22d9;padding:5px 9px;border-radius:5px;font-size:12px;text-align:center;pointer-events:none;max-width:45%}
+.notice:empty{display:none}
+.touch{position:absolute;inset:0;pointer-events:none}
+.stick,.touch-actions{position:absolute;bottom:73px;pointer-events:auto;touch-action:none}
+.stick{left:14px;width:78px;height:78px;border:1px solid #fff8;border-radius:50%;background:#172d2480;display:grid;place-items:center}
+#knob{width:32px;height:32px;border-radius:50%;background:#f6f2dca0;pointer-events:none}
+.touch-actions{right:13px;display:grid;grid-template-columns:repeat(2,39px);gap:5px}
+.touch-actions button{height:39px;border:1px solid #fffa;border-radius:8px;background:#172d24b9;color:#fff;font-size:19px;line-height:1;padding:0}
+dialog{width:min(490px,calc(100% - 30px));border:1px solid #b7c2ac;border-radius:13px;padding:27px;background:#fcfaf0;color:var(--ink);box-shadow:0 12px 40px #14271a55}
+dialog::backdrop{background:#172b21a0}
+dialog .eyebrow{justify-content:flex-start}
+dialog h2{margin:6px 0}dialog p,dialog li{font-size:14px;line-height:1.5}
+.close{position:absolute;right:12px;top:9px;border:0;border-radius:5px;background:#e8ebdf;font-size:21px;line-height:1.2}
+.game-shell:fullscreen{border:0;border-radius:0;display:flex;flex-direction:column}
+.game-shell:fullscreen .arena{flex:1;height:auto;min-height:0}
+@media(pointer:coarse){.desktop-guide{display:none}.mobile-guide{display:flex}}
+@media(max-width:620px){.wrap{width:calc(100% - 24px)}.site-header{height:54px}.intro{padding:27px 0 18px}.intro p{font-size:12px}.arena{height:clamp(365px,65svh,610px)}.hud{top:10px}.hud-health{left:9px}.hud-wave{right:9px}.inventory{bottom:9px}.launch{padding:17px 19px 20px;min-width:min(275px,100%)}.controls{gap:8px 14px;padding:12px 0}.notice{top:60px}}
+@media(pointer:coarse) and (orientation:landscape) and (max-height:500px){.arena{height:calc(100svh - 40px);min-height:245px}.stick,.touch-actions{bottom:14px}}

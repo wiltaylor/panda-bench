@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Pandamonium Blocks</title>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#9fd3ee;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#fff;
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:none;overscroll-behavior:none}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+#cross{position:fixed;left:50%;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px;pointer-events:none;opacity:.85}
+#cross:before,#cross:after{content:"";position:absolute;background:#fff;box-shadow:0 0 2px #000}
+#cross:before{left:10px;top:2px;width:2px;height:18px}
+#cross:after{top:10px;left:2px;height:2px;width:18px}
+#hud{position:fixed;left:0;right:0;top:0;padding:calc(8px + env(safe-area-inset-top)) 12px 0;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none;font-weight:700;text-shadow:0 1px 2px #000}
+#hpwrap{width:min(42vw,220px)}
+#hpbar{height:14px;border:2px solid #1c2b1c;border-radius:8px;background:#0006;overflow:hidden}
+#hpfill{height:100%;width:100%;background:linear-gradient(#ff7a6b,#d8322a);transition:width .15s}
+#hplabel{font-size:12px;margin-top:2px}
+#score{font-size:14px;text-align:right;line-height:1.35}
+#toast{position:fixed;left:0;right:0;top:22%;text-align:center;font-weight:800;font-size:18px;text-shadow:0 2px 3px #000;pointer-events:none;opacity:0;transition:opacity .3s}
+#hurt{position:fixed;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse at center,rgba(255,0,0,0) 45%,rgba(220,20,10,.75) 100%)}
+#hotbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(6px + env(safe-area-inset-bottom));display:flex;gap:3px;padding:3px;background:#1c2b1cbb;border-radius:8px}
+.slot{position:relative;width:min(46px,calc((100vw - 40px)/9));aspect-ratio:1;background:#ffffff22;border:2px solid #0000;border-radius:6px;box-sizing:border-box;cursor:pointer}
+.slot.sel{border-color:#ffd84a;background:#ffffff55}
+.slot canvas{width:100%;height:100%;image-rendering:pixelated;display:block}
+.slot span{position:absolute;right:2px;bottom:0;font-size:11px;font-weight:800;text-shadow:0 1px 2px #000}
+.slot i{position:absolute;left:3px;top:0;font-size:9px;font-style:normal;opacity:.7}
+#itemname{position:fixed;left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom));text-align:center;font-size:13px;font-weight:700;text-shadow:0 1px 2px #000;pointer-events:none}
+.touch{display:none}
+body.touchmode .touch{display:flex}
+body.touchmode .slot i{display:none}
+#joy{position:fixed;left:26px;bottom:calc(84px + env(safe-area-inset-bottom));width:120px;height:120px;border-radius:50%;background:#ffffff22;border:2px solid #ffffff66;pointer-events:none;align-items:center;justify-content:center}
+#knob{width:52px;height:52px;border-radius:50%;background:#ffffffaa}
+.tb{position:fixed;width:68px;height:68px;border-radius:50%;background:#1c2b1c99;border:2px solid #ffffffaa;align-items:center;justify-content:center;font-weight:800;font-size:13px;touch-action:none}
+.tb.on{background:#ffd84acc;color:#222}
+#bJump{right:18px;bottom:calc(84px + env(safe-area-inset-bottom))}
+#bHit{right:100px;bottom:calc(104px + env(safe-area-inset-bottom))}
+#bUse{right:36px;bottom:calc(166px + env(safe-area-inset-bottom))}
+#overlay{position:fixed;inset:0;background:#10241acc;display:flex;align-items:center;justify-content:center;padding:14px;box-sizing:border-box;overflow:auto}
+#panel{max-width:560px;width:100%;background:#17301f;border:3px solid #ffd84a;border-radius:14px;padding:18px 22px;box-sizing:border-box;text-align:center;max-height:100%;overflow:auto}
+#panel h1{margin:0 0 4px;font-size:30px;color:#ffd84a;letter-spacing:1px}
+#panel p{margin:6px 0;font-size:14px;line-height:1.4}
+#panel table{margin:8px auto;border-collapse:collapse;font-size:13px;text-align:left}
+#panel td{padding:2px 8px;vertical-align:top}
+#panel td:first-child{color:#ffd84a;font-weight:700;white-space:nowrap}
+#go{margin-top:10px;font:inherit;font-weight:800;font-size:20px;padding:10px 34px;border-radius:10px;border:0;background:#ffd84a;color:#17301f;cursor:pointer}
+#err{color:#ff9a8a}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hurt"></div>
+<div id="cross"></div>
+<div id="hud">
+  <div id="hpwrap"><div id="hpbar"><div id="hpfill"></div></div><div id="hplabel">Health 20 / 20</div></div>
+  <div id="score">Pandas defeated: 0<br>Pandas nearby: 0</div>
+</div>
+<div id="toast"></div>
+<div id="itemname"></div>
+<div id="hotbar"></div>
+<div id="joy" class="touch"><div id="knob"></div></div>
+<div id="bHit" class="tb touch">HIT</div>
+<div id="bUse" class="tb touch">USE</div>
+<div id="bJump" class="tb touch">JUMP</div>
+<div id="overlay"><div id="panel">
+  <h1>PANDAMONIUM BLOCKS</h1>
+  <p id="sub">A block-building sandbox where grumpy pandas lob pineapples at you. Dig, build walls, and fight back.</p>
+  <table id="helpDesk">
+    <tr><td>W A S D</td><td>move (Shift to run, Space to jump)</td></tr>
+    <tr><td>Mouse</td><td>look around</td></tr>
+    <tr><td>Left button</td><td>hold to break a block, click to hit a panda</td></tr>
+    <tr><td>Right button</td><td>place the selected block</td></tr>
+    <tr><td>1-9 / wheel</td><td>choose a tool or block</td></tr>
+    <tr><td>Esc</td><td>pause</td></tr>
+  </table>
+  <table id="helpTouch" style="display:none">
+    <tr><td>Left side</td><td>drag to move</td></tr>
+    <tr><td>Right side</td><td>drag to look around</td></tr>
+    <tr><td>HIT</td><td>hold to break a block, tap to hit a panda</td></tr>
+    <tr><td>USE</td><td>place the selected block</td></tr>
+    <tr><td>JUMP</td><td>jump (you also step up blocks automatically)</td></tr>
+    <tr><td>Bottom bar</td><td>tap to choose a tool or block</td></tr>
+  </table>
+  <table>
+    <tr><td>Sword</td><td>hits pandas hard</td></tr>
+    <tr><td>Pickaxe</td><td>breaks blocks four times faster</td></tr>
+    <tr><td>Shield</td><td>hold HIT or USE (any mouse button) and face a pineapple to bounce it back</td></tr>
+    <tr><td>Slingshot</td><td>shoots pebbles at pandas from a distance</td></tr>
+  </table>
+  <p id="err"></p>
+  <button id="go">PLAY</button>
+</div></div>
+<script src="game.js"></script>
+</body>
+</html>

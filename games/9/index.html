@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Panda Siege - a voxel defence game</title>
+<style>
+  :root {
+    --panel: rgba(18, 20, 26, 0.88);
+    --border: #6c6c6c;
+    --accent: #f2c84b;
+    --text: #f4f4f4;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #6fa8e8; color: var(--text); font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+  #game { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: crosshair; }
+  body.playing.locked #game { cursor: none; }
+  body:not(.touch) .touch-only, body.touch .mouse-only { display: none !important; }
+
+  /* ---------------- HUD ---------------- */
+  #hud { position: fixed; inset: 0; pointer-events: none; display: none; }
+  body.playing #hud { display: block; }
+  #crosshair { position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; transform: translate(-50%, -50%); mix-blend-mode: difference; }
+  #crosshair::before, #crosshair::after { content: ""; position: absolute; background: #fff; }
+  #crosshair::before { left: 10px; top: 0; width: 2px; height: 22px; }
+  #crosshair::after { top: 10px; left: 0; width: 22px; height: 2px; }
+  #hitmarker { position: absolute; left: 50%; top: 50%; width: 36px; height: 36px; transform: translate(-50%, -50%) rotate(45deg); opacity: 0; }
+  #hitmarker::before, #hitmarker::after { content: ""; position: absolute; background: #fff; box-shadow: 0 0 2px #000; }
+  #hitmarker::before { left: 17px; top: 0; width: 2px; height: 36px; }
+  #hitmarker::after { top: 17px; left: 0; width: 36px; height: 2px; }
+  #hitmarker.show { animation: hit 0.35s ease-out; }
+  @keyframes hit { 0% { opacity: 1; transform: translate(-50%,-50%) rotate(45deg) scale(0.6); } 100% { opacity: 0; transform: translate(-50%,-50%) rotate(45deg) scale(1.2); } }
+  #flash { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(255,0,0,0) 40%, rgba(255,0,0,0.75) 100%); opacity: 0; }
+  #flash.show { animation: flash 0.5s ease-out; }
+  @keyframes flash { 0% { opacity: 1; } 100% { opacity: 0; } }
+  #shield-hint { position: absolute; left: 50%; top: 60%; transform: translateX(-50%); font-size: 16px; font-weight: 600; color: #fff; text-shadow: 0 1px 3px #000; opacity: 0; transition: opacity 0.3s; white-space: nowrap; }
+  #shield-hint.show { opacity: 1; }
+  .panda-art { width: 84px; height: 84px; margin: 0 auto 4px; }
+  .panda-art svg { width: 100%; height: 100%; filter: drop-shadow(2px 3px 0 rgba(0,0,0,0.45)); }
+
+  #stats { position: absolute; left: 12px; top: 10px; font-size: 15px; line-height: 1.5; text-shadow: 0 1px 2px rgba(0,0,0,0.8); background: rgba(0,0,0,0.25); padding: 6px 10px; border-radius: 6px; }
+  #stats b { color: var(--accent); font-size: 22px; }
+  #stats .sub { font-size: 12px; opacity: 0.9; }
+
+  #bottom { position: absolute; left: 50%; bottom: calc(10px + env(safe-area-inset-bottom)); transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  #hearts { display: flex; gap: 2px; }
+  .heart-wrap { position: relative; width: 20px; height: 20px; }
+  .heart { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .heart.bg path { fill: #2b0a0a; stroke: #000; stroke-width: 0.8; }
+  .heart.fg path { fill: #e8302a; stroke: #fff; stroke-width: 0.6; }
+  .heart-wrap.low .fg path { fill: #ff7a3a; }
+  #item-name { font-size: 14px; text-shadow: 0 1px 2px #000; opacity: 0; transition: opacity 0.4s; height: 18px; }
+  #item-name.show { opacity: 1; }
+  #hotbar { display: flex; gap: 3px; pointer-events: auto; }
+  .slot { position: relative; width: 48px; height: 48px; background: rgba(0,0,0,0.5); border: 2px solid #8a8a8a; border-radius: 3px; display: flex; align-items: center; justify-content: center; }
+  .slot img { width: 38px; height: 38px; image-rendering: pixelated; }
+  .slot.selected { border-color: #fff; background: rgba(255,255,255,0.2); transform: scale(1.08); }
+  .slot .key { position: absolute; left: 3px; top: 1px; font-size: 10px; color: #ddd; text-shadow: 0 1px 1px #000; }
+  body.touch .slot { width: 44px; height: 44px; }
+  body.touch .slot img { width: 34px; height: 34px; }
+
+  /* ---------------- Touch controls ---------------- */
+  #touch-ui { position: fixed; inset: 0; pointer-events: none; display: none; }
+  body.playing.touch #touch-ui { display: block; }
+  #joy { position: absolute; left: calc(18px + env(safe-area-inset-left)); bottom: calc(22px + env(safe-area-inset-bottom)); width: 150px; height: 150px; border-radius: 50%; background: rgba(255,255,255,0.12); border: 2px solid rgba(255,255,255,0.45); pointer-events: auto; touch-action: none; }
+  #joy-knob { position: absolute; left: 50%; top: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; background: rgba(255,255,255,0.55); border: 2px solid #fff; }
+  .tbtn { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.18); border: 2px solid rgba(255,255,255,0.6); color: #fff; display: flex; align-items: center; justify-content: center; flex-direction: column; font-weight: 700; font-size: 11px; text-shadow: 0 1px 2px #000; pointer-events: auto; touch-action: none; }
+  .tbtn.active { background: rgba(255,255,255,0.5); }
+  .tbtn svg { width: 34px; height: 34px; fill: #fff; filter: drop-shadow(0 1px 1px #000); }
+  #btn-jump { right: calc(22px + env(safe-area-inset-right)); bottom: calc(26px + env(safe-area-inset-bottom)); width: 84px; height: 84px; }
+  #btn-attack { right: calc(120px + env(safe-area-inset-right)); bottom: calc(86px + env(safe-area-inset-bottom)); width: 72px; height: 72px; }
+  #btn-use { right: calc(120px + env(safe-area-inset-right)); bottom: calc(2px + env(safe-area-inset-bottom)); width: 66px; height: 66px; }
+  #btn-pause { position: fixed; right: calc(12px + env(safe-area-inset-right)); top: calc(10px + env(safe-area-inset-top)); width: 40px; height: 40px; border-radius: 8px; background: rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.6); color: #fff; display: none; align-items: center; justify-content: center; font-size: 18px; pointer-events: auto; cursor: pointer; }
+  body.playing #btn-pause { display: flex; }
+  body.playing.touch #btn-pause { display: flex; }
+  body:not(.touch) #btn-pause { opacity: 0.55; }
+
+  /* ---------------- Screens ---------------- */
+  .screen { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(10, 14, 20, 0.55); padding: 16px; overflow: auto; }
+  .screen.visible { display: flex; }
+  .panel { background: var(--panel); border: 3px solid var(--border); border-radius: 6px; padding: 22px 28px; max-width: 640px; width: 100%; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+  h1 { font-size: 44px; margin: 0 0 4px; letter-spacing: 3px; color: #fff; text-shadow: 3px 3px 0 #2a4a8a, 6px 6px 0 rgba(0,0,0,0.5); }
+  h2 { font-size: 28px; margin: 0 0 10px; text-shadow: 2px 2px 0 rgba(0,0,0,0.6); }
+  .tagline { color: var(--accent); margin: 0 0 16px; font-size: 15px; }
+  .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; text-align: left; font-size: 14px; margin: 0 auto 18px; max-width: 520px; }
+  .controls div { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 3px 0; }
+  .controls span:last-child { color: var(--accent); font-weight: 600; white-space: nowrap; }
+  .btn { display: inline-block; font: inherit; font-weight: 700; font-size: 17px; padding: 10px 26px; margin: 4px 6px; color: #fff; background: #6f6f6f; border: 2px solid #000; box-shadow: inset 2px 2px 0 #9a9a9a, inset -2px -2px 0 #3c3c3c; cursor: pointer; border-radius: 2px; }
+  .btn:hover { background: #7f8fb0; }
+  .btn:active { box-shadow: inset -2px -2px 0 #9a9a9a, inset 2px 2px 0 #3c3c3c; }
+  .btn.primary { background: #3f7f3f; box-shadow: inset 2px 2px 0 #6fbf6f, inset -2px -2px 0 #2a5a2a; }
+  .btn.primary:hover { background: #4a9a4a; }
+  .btn-row { display: flex; flex-wrap: wrap; justify-content: center; }
+  .hint { font-size: 13px; opacity: 0.8; margin-top: 12px; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 10px 0 18px; }
+  .stats div { background: rgba(255,255,255,0.06); border-radius: 4px; padding: 8px; }
+  .stats b { display: block; font-size: 26px; color: var(--accent); }
+  .stats span { font-size: 12px; opacity: 0.85; }
+  .panda-art { width: 84px; height: 84px; margin: 0 auto 4px; }
+
+  @media (max-width: 700px), (max-height: 480px) {
+    h1 { font-size: 30px; }
+    .panel { padding: 14px 16px; }
+    .controls { font-size: 12px; gap: 2px 10px; }
+    .btn { font-size: 15px; padding: 8px 16px; }
+    .stats b { font-size: 20px; }
+    #stats { font-size: 12px; padding: 4px 8px; }
+    #stats b { font-size: 16px; }
+    #bottom { bottom: calc(4px + env(safe-area-inset-bottom)); }
+  }
+  @media (max-height: 420px) {
+    .panda-art { display: none; }
+    .tagline { margin-bottom: 8px; }
+    .controls { margin-bottom: 8px; }
+  }
+  /* Portrait phones: hotbar at the top so it does not collide with stick and buttons */
+  @media (orientation: portrait) and (max-width: 600px) {
+    body.touch #bottom { top: 52px; bottom: auto; }
+    body.touch #stats { top: 150px; }
+    body.touch .slot { width: 34px; height: 34px; }
+    body.touch .slot img { width: 28px; height: 28px; }
+    body.touch .slot .key { display: none; }
+    #bottom { bottom: 2px; }
+  }
+  #loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: #6fa8e8; color: #fff; font-size: 18px; text-shadow: 0 1px 2px #000; z-index: 10; }
+  #loading.hidden { display: none; }
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<div id="hud">
+  <div id="flash"></div>
+  <div id="crosshair"></div>
+  <div id="hitmarker"></div>
+  <div id="shield-hint"></div>
+  <div id="stats">
+    <div><b id="score">0</b></div>
+    <div class="sub"><span id="time">0:00</span> · <span id="pandas">0 pandas</span> · <span id="blocked">0 blocked</span></div>
+  </div>
+  <div id="bottom">
+    <div id="hearts"></div>
+    <div id="item-name"></div>
+    <div id="hotbar"></div>
+  </div>
+</div>
+
+<div id="touch-ui">
+  <div id="joy"><div id="joy-knob"></div></div>
+  <div id="btn-attack" class="tbtn"><svg viewBox="0 0 24 24"><path d="M5 19l2 2 3-3-2-2-3 3zm3-5l2 2 8-8-2-2-8 8zM3 5c3-2 7-2 9 1l-2 2c-1-2-3-3-5-2l5 5-2 2-5-5v-3z"/></svg></div>
+  <div id="btn-use" class="tbtn"><svg viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5V7l9-5zm0 2.3L5.5 8 12 11.5 18.5 8 12 4.3zM5 9.7v6.6l6 3.3v-6.6L5 9.7z"/></svg></div>
+  <div id="btn-jump" class="tbtn"><svg viewBox="0 0 24 24"><path d="M12 3l6 7h-4v11h-4V10H6l6-7z"/></svg></div>
+</div>
+<button id="btn-pause" aria-label="Pause">II</button>
+
+<div id="screen-start" class="screen">
+  <div class="panel">
+    <div class="panda-art"><svg viewBox="0 0 64 64"><circle cx="14" cy="16" r="9" fill="#161616"/><circle cx="50" cy="16" r="9" fill="#161616"/><circle cx="32" cy="34" r="24" fill="#f2f2f2" stroke="#161616" stroke-width="1.5"/><ellipse cx="23" cy="31" rx="6" ry="7.5" fill="#161616" transform="rotate(-20 23 31)"/><ellipse cx="41" cy="31" rx="6" ry="7.5" fill="#161616" transform="rotate(20 41 31)"/><circle cx="24" cy="31" r="2" fill="#fff"/><circle cx="40" cy="31" r="2" fill="#fff"/><ellipse cx="32" cy="44" rx="4" ry="3" fill="#161616"/><path d="M32 47 v4 M28 52 q4 3 8 0" stroke="#161616" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></div>
+    <h1>PANDA SIEGE</h1>
+    <p class="tagline">Build, break blocks, and hold the line. The pandas are hungry and they throw pineapples.</p>
+    <div class="controls mouse-only">
+      <div><span>Move</span><span>W A S D</span></div>
+      <div><span>Look</span><span>Mouse</span></div>
+      <div><span>Jump</span><span>Space</span></div>
+      <div><span>Sprint / Sneak</span><span>Shift / Ctrl</span></div>
+      <div><span>Break block / Attack</span><span>Left click</span></div>
+      <div><span>Place block / Shield / Shoot</span><span>Right click</span></div>
+      <div><span>Select item</span><span>1-9 or Wheel</span></div>
+      <div><span>Pause</span><span>Esc</span></div>
+    </div>
+    <div class="controls touch-only">
+      <div><span>Move</span><span>Left stick</span></div>
+      <div><span>Look</span><span>Drag screen</span></div>
+      <div><span>Break / Attack</span><span>Sword button or tap</span></div>
+      <div><span>Place / Shield / Shoot</span><span>Cube button</span></div>
+      <div><span>Jump</span><span>Arrow button</span></div>
+      <div><span>Select item</span><span>Tap the hotbar</span></div>
+    </div>
+    <div class="btn-row"><button id="btn-play" class="btn primary">Play</button><button id="btn-fullscreen" class="btn touch-only">Fullscreen</button></div>
+    <p class="hint mouse-only">Hold the Shield (slot 3) with right click to deflect pineapples back at the pandas. Click Play to lock the mouse.</p>
+    <p class="hint touch-only">Hold the Shield (slot 3) with the cube button to deflect pineapples back at the pandas.</p>
+  </div>
+</div>
+
+<div id="screen-pause" class="screen">
+  <div class="panel">
+    <h2>Paused</h2>
+    <div class="btn-row">
+      <button id="btn-resume" class="btn primary">Resume</button>
+      <button id="btn-restart" class="btn">Restart</button>
+      <button id="btn-touch" class="btn">Controls: Keyboard</button>
+      <button id="btn-sound" class="btn">Sound: On</button>
+      <button id="btn-fullscreen" class="btn">Fullscreen</button>
+    </div>
+    <p class="hint mouse-only">Press Esc to pause. Mouse is locked while playing; if the lock fails, drag to look.</p>
+  </div>
+</div>
+
+<div id="screen-dead" class="screen">
+  <div class="panel">
+    <div class="panda-art"><svg viewBox="0 0 64 64"><circle cx="14" cy="16" r="9" fill="#161616"/><circle cx="50" cy="16" r="9" fill="#161616"/><circle cx="32" cy="34" r="24" fill="#f2f2f2" stroke="#161616" stroke-width="1.5"/><path d="M20 28 l8 6 M44 28 l-8 6" stroke="#161616" stroke-width="3" stroke-linecap="round"/><circle cx="24" cy="34" r="2" fill="#161616"/><circle cx="40" cy="34" r="2" fill="#161616"/><ellipse cx="32" cy="44" rx="4" ry="3" fill="#161616"/><path d="M28 50 q4 -3 8 0" stroke="#161616" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></div>
+    <h2>You were pelted into submission</h2>
+    <div class="stats">
+      <div><b id="dead-time">0:00</b><span>Survived</span></div>
+      <div><b id="dead-pandas">0</b><span>Pandas defeated</span></div>
+      <div><b id="dead-blocked">0</b><span>Pineapples blocked</span></div>
+      <div><b id="dead-score">0</b><span>Score</span></div>
+    </div>
+    <div class="btn-row"><button id="btn-again" class="btn primary">Play again</button></div>
+  </div>
+</div>
+
+<div id="loading">Generating world...</div>
+
+<script src="game.js"></script>
+</body>
+</html>

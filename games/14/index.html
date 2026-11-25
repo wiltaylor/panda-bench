@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>PandaCraft: Pineapple Siege</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <canvas id="game-canvas" aria-label="PandaCraft 3D Voxel World"></canvas>
+
+  <!-- Screen Feedback Overlays -->
+  <div id="damage-flash" class="screen-flash damage-flash" aria-hidden="true"></div>
+  <div id="shield-flash" class="screen-flash shield-flash" aria-hidden="true"></div>
+
+  <!-- Center Crosshair & Mining Ring -->
+  <div id="crosshair-wrap" aria-hidden="true">
+    <div id="mining-ring"></div>
+    <div id="crosshair"></div>
+  </div>
+
+  <!-- Top HUD Bar -->
+  <header id="hud-top">
+    <div class="hud-left">
+      <div id="hearts" class="hearts-bar" role="status"></div>
+      <div id="shield-badge" class="shield-badge">SHIELD UP</div>
+    </div>
+
+    <div class="hud-right">
+      <div class="stats-pill" aria-label="Game statistics">
+        <span>Pandas <strong id="stat-pandas">6</strong></span>
+        <span class="sep">|</span>
+        <span>KO <strong id="stat-defeated">0</strong></span>
+        <span class="sep">|</span>
+        <span>Blocked <strong id="stat-blocked">0</strong></span>
+      </div>
+      <div class="hud-buttons">
+        <button id="btn-touch-toggle" class="hud-btn" type="button" title="Toggle on-screen touch controls">Touch: Off</button>
+        <button id="btn-mute-toggle" class="hud-btn" type="button" title="Toggle sound effects">Sound: On</button>
+        <button id="btn-pause" class="hud-btn" type="button" title="Pause and view controls">Pause</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Action Toast -->
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Mobile / Touch Controls Layer -->
+  <div id="touch-controls" aria-label="Touch Controls">
+    <div id="joy-base" class="joy-base" aria-label="Movement Joystick">
+      <div id="joy-knob" class="joy-knob"></div>
+    </div>
+
+    <div class="touch-actions">
+      <button id="btn-secondary" class="touch-btn touch-btn-secondary" type="button">
+        <span id="btn-secondary-label">DEFLECT</span>
+      </button>
+      <button id="btn-primary" class="touch-btn touch-btn-primary" type="button">
+        <span id="btn-primary-label">SLASH</span>
+      </button>
+      <button id="btn-jump" class="touch-btn touch-btn-jump" type="button">
+        <span>JUMP</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Bottom Hotbar & Active Tool Hint -->
+  <footer id="hud-bottom">
+    <div id="slot-label" class="slot-label">Iron Sword — Slash pandas &amp; bat pineapples back</div>
+    <nav id="hotbar" class="hotbar" aria-label="Inventory Hotbar"></nav>
+  </footer>
+
+  <!-- Start Screen Overlay -->
+  <div id="start-overlay" class="modal-overlay">
+    <div class="modal-card">
+      <h1 class="game-title">PANDACRAFT</h1>
+      <p class="game-subtitle">Voxel Survival vs. Pineapple-Throwing Pandas</p>
+
+      <div class="controls-grid">
+        <div class="control-box">
+          <h2>Desktop</h2>
+          <ul>
+            <li><strong>WASD / Arrows</strong> Move &bull; <strong>Shift</strong> Sprint &bull; <strong>Space</strong> Jump</li>
+            <li><strong>Mouse</strong> Look around (click canvas to lock)</li>
+            <li><strong>Left Click</strong> Break block / Slash / Shoot / Hold Shield</li>
+            <li><strong>Right Click or E</strong> Place block / Raise Shield</li>
+            <li><strong>1–9 or Scroll</strong> Switch tools &amp; blocks</li>
+          </ul>
+        </div>
+        <div class="control-box">
+          <h2>Mobile &amp; Touch</h2>
+          <ul>
+            <li><strong>Left Stick</strong> Walk &amp; push outer edge to sprint</li>
+            <li><strong>Drag Screen</strong> Look &amp; aim anywhere on canvas</li>
+            <li><strong>Action Buttons</strong> Break / Place / Slash / Shield / Jump</li>
+            <li><strong>Tap Hotbar</strong> Switch tools &amp; blocks anytime</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tools-strip">
+        <span><strong>1 Sword</strong> Bat pineapples back</span>
+        <span><strong>2 Shield</strong> Block &amp; reflect</span>
+        <span><strong>3 Pickaxe</strong> Fast mining</span>
+        <span><strong>4 Bow</strong> Ranged arrows</span>
+        <span><strong>5–9 Blocks</strong> Build cover</span>
+      </div>
+
+      <button id="btn-play" class="primary-cta" type="button">PLAY NOW</button>
+    </div>
+  </div>
+
+  <!-- Pause Overlay -->
+  <div id="pause-overlay" class="modal-overlay hidden">
+    <div class="modal-card compact-card">
+      <h2 class="modal-heading">PAUSED</h2>
+      <p class="modal-note">Build walls with blocks (5–9), hold the Shield (2) to bounce pineapples back, or bat them mid-air with your Sword (1).</p>
+      <div class="modal-actions">
+        <button id="btn-resume" class="primary-cta" type="button">RESUME</button>
+        <button id="btn-restart-pause" class="secondary-cta" type="button">NEW WORLD</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Death / Respawn Overlay -->
+  <div id="death-overlay" class="modal-overlay hidden">
+    <div class="modal-card compact-card death-card">
+      <h2 class="modal-heading">YOU WERE PINEAPPLED!</h2>
+      <p id="death-stats" class="modal-note"></p>
+      <button id="btn-respawn" class="primary-cta" type="button">RESPAWN</button>
+    </div>
+  </div>
+
+  <div id="webgl-error" class="modal-overlay hidden"></div>
+
+  <script src="./game.js"></script>
+</body>
+</html>

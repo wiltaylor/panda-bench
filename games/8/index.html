@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>PandaCraft: Pineapple Panic</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<div id="hud">
+  <canvas id="crosshair" width="48" height="48"></canvas>
+  <div id="stats">
+    <canvas id="hearts" width="164" height="18"></canvas>
+    <div id="score">Pandas defeated: 0</div>
+  </div>
+  <div id="hotbar"></div>
+  <div id="toast"></div>
+  <div id="vignette"></div>
+  <div id="touchui">
+    <div id="joyBase"><div id="joyKnob"></div></div>
+    <div id="btnJump" class="tbtn">JUMP</div>
+    <div id="btnPause" class="tbtn">II</div>
+  </div>
+</div>
+<div class="credit">PandaCraft &mdash; raw WebGL, no libraries</div>
+
+<div id="overlay" class="overlay">
+  <div class="panel">
+    <h1>PANDACRAFT</h1>
+    <p class="tag">Pineapple Panic &mdash; mine, build, and survive the fruit-throwing pandas.</p>
+    <div class="controls" id="ctrlDesktop">
+      <b>Desktop controls</b><br>
+      WASD / arrows &mdash; move &nbsp;&middot;&nbsp; Space &mdash; jump &nbsp;&middot;&nbsp; Shift &mdash; sneak<br>
+      Mouse &mdash; look &nbsp;&middot;&nbsp; Left click &mdash; mine / attack &nbsp;&middot;&nbsp; Right click &mdash; place / throw<br>
+      1&ndash;9 or wheel &mdash; hotbar &nbsp;&middot;&nbsp; Q &mdash; quick-throw pineapple &nbsp;&middot;&nbsp; Middle click &mdash; pick block &nbsp;&middot;&nbsp; Esc &mdash; pause
+    </div>
+    <div class="controls" id="ctrlTouch">
+      <b>Touch controls</b><br>
+      Left thumb &mdash; joystick to move &nbsp;&middot;&nbsp; Right thumb &mdash; drag to look<br>
+      Tap &mdash; place block / throw pineapple / attack &nbsp;&middot;&nbsp; Hold &mdash; mine<br>
+      JUMP button to jump &nbsp;&middot;&nbsp; Tap a hotbar slot to select it
+    </div>
+    <button id="btnPlay" class="bigbtn">PLAY</button>
+    <p class="tip" id="genNote">building the world&hellip;</p>
+    <p class="tip">The pandas pelt you with pineapples. Dodge, pick the fruit up, and throw it right back &mdash; or swing your sword up close. Watch your hearts.</p>
+  </div>
+</div>
+
+<div id="pauseOverlay" class="overlay hidden">
+  <div class="panel">
+    <h1 class="calm">PAUSED</h1>
+    <p class="tag">The pandas are waiting.</p>
+    <button id="btnResume" class="bigbtn">RESUME</button>
+    <p class="tip" id="pauseHint"></p>
+  </div>
+</div>
+
+<div id="deathOverlay" class="overlay hidden">
+  <div class="panel death">
+    <h1>PINEAPPLED!</h1>
+    <p class="tag" id="deathScore">Pandas defeated: 0</p>
+    <button id="btnRespawn" class="bigbtn">RESPAWN</button>
+    <p class="tip">Tip: you can bat incoming pineapples out of the air with your sword.</p>
+  </div>
+</div>
+
+<script src="js/util.js"></script>
+<script src="js/world.js"></script>
+<script src="js/render.js"></script>
+<script src="js/entities.js"></script>
+<script src="js/player.js"></script>
+<script src="js/input.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

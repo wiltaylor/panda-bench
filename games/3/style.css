@@ -1,0 +1,82 @@
+html, body {
+  margin: 0; height: 100%; overflow: hidden; background: #87bfe8;
+  font-family: system-ui, Arial, sans-serif; user-select: none; -webkit-user-select: none;
+  touch-action: none; -webkit-tap-highlight-color: transparent;
+}
+#c { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+.hidden { display: none !important; }
+
+#hud { position: fixed; inset: 0; pointer-events: none; z-index: 2; }
+#hearts { position: absolute; left: 12px; top: 10px; font-size: 22px; letter-spacing: 2px; text-shadow: 0 1px 2px #000; }
+#hearts span.full { color: #ff3b4e; }
+#hearts span.half { color: #ff3b4e; opacity: 0.5; }
+#hearts span.empty { color: #555; }
+#score { position: absolute; right: 12px; top: 10px; color: #fff; font-weight: 600; text-shadow: 0 1px 3px #000; }
+#crosshair {
+  position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px;
+}
+#crosshair::before, #crosshair::after { content: ""; position: absolute; background: #fff; mix-blend-mode: difference; }
+#crosshair::before { left: 10px; top: 0; width: 2px; height: 22px; }
+#crosshair::after { left: 0; top: 10px; width: 22px; height: 2px; }
+#flash { position: absolute; inset: 0; background: rgba(255, 0, 0, 0); transition: background 0.05s; }
+
+#hotbar {
+  position: fixed; left: 50%; bottom: 8px; transform: translateX(-50%);
+  display: flex; gap: 4px; pointer-events: auto; z-index: 4;
+}
+#hotbar .slot {
+  width: 44px; height: 44px; border: 2px solid rgba(0,0,0,0.5); border-radius: 6px;
+  background: rgba(20,20,20,0.55); color: #fff; font-size: 10px; padding: 0; position: relative;
+  display: flex; align-items: flex-end; justify-content: center; touch-action: manipulation;
+}
+#hotbar .slot.sel { border-color: #fff; box-shadow: 0 0 0 2px #ffd34d; }
+#hotbar .swatch {
+  position: absolute; left: 7px; top: 6px; width: 26px; height: 22px; border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.35);
+}
+#hotbar .num { position: absolute; left: 3px; top: 1px; font-size: 9px; opacity: 0.8; }
+#hotbar .label { text-shadow: 0 1px 2px #000; margin-bottom: 1px; }
+
+#touch { position: fixed; inset: 0; z-index: 3; }
+#touchLook { position: absolute; inset: 0; }
+#joy {
+  position: absolute; left: 16px; bottom: 64px; width: 124px; height: 124px; border-radius: 50%;
+  background: rgba(255,255,255,0.18); border: 2px solid rgba(255,255,255,0.5);
+}
+#knob {
+  position: absolute; left: 37px; top: 37px; width: 50px; height: 50px; border-radius: 50%;
+  background: rgba(255,255,255,0.55);
+}
+.tbtn {
+  position: absolute; width: 74px; height: 74px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.7);
+  background: rgba(30,30,30,0.45); color: #fff; font-size: 14px; font-weight: 600; touch-action: none;
+}
+.tbtn.big { width: 96px; height: 96px; font-size: 16px; background: rgba(180,40,30,0.5); }
+.tbtn:active { background: rgba(255,255,255,0.35); }
+#bAct { right: 16px; bottom: 150px; }
+#bUse { right: 128px; bottom: 80px; width: 66px; height: 66px; font-size: 12px; }
+#bShield { right: 118px; bottom: 170px; width: 66px; height: 66px; font-size: 12px; }
+#bJump { right: 16px; bottom: 262px; width: 66px; height: 66px; font-size: 12px; }
+
+#menu, #dead {
+  position: fixed; inset: 0; z-index: 10; display: flex; align-items: center; justify-content: center;
+  background: rgba(10, 20, 30, 0.55); padding: 12px; box-sizing: border-box;
+}
+.card {
+  background: #f7f3e8; color: #222; max-width: 560px; max-height: 100%; overflow: auto;
+  border-radius: 10px; padding: 18px 22px; box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  font-size: 15px; line-height: 1.4;
+}
+.card h1 { margin: 0 0 8px; font-size: 24px; }
+.card h2 { margin: 0 0 8px; font-size: 22px; color: #a02020; }
+.card p { margin: 6px 0; }
+.card button.primary {
+  margin-top: 8px; font-size: 18px; padding: 10px 26px; border-radius: 8px; border: 0;
+  background: #3a8f3a; color: #fff; cursor: pointer;
+}
+
+@media (max-width: 520px) {
+  #hotbar { gap: 2px; }
+  #hotbar .slot { width: 36px; height: 40px; font-size: 9px; }
+  #hotbar .swatch { left: 5px; top: 5px; width: 22px; height: 18px; }
+}

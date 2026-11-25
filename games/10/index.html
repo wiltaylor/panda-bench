@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Panda Panic</title>
+<link rel="stylesheet" href="style.css">
+<script defer src="game.js"></script>
+</head>
+<body>
+<main id="game" aria-label="Panda Panic voxel survival game">
+  <canvas id="world" aria-label="First-person voxel world"></canvas>
+  <header class="topbar">
+    <div class="brand"><span class="mark">◆</span> PANDA<span class="accent">PANIC</span></div>
+    <div class="location"><i></i> BAMBOO VALLEY <span>/</span> SURVIVAL</div>
+    <button id="help" aria-label="Controls and pause">?</button>
+  </header>
+  <div class="crosshair" aria-hidden="true"></div>
+  <aside class="threat"><span>✦</span><div><small>THREAT LEVEL</small><strong id="threat">Pandas nearby</strong></div></aside>
+  <section class="intro" id="intro">
+    <div class="eyebrow"><span></span> A VOXEL SURVIVAL GAME</div>
+    <h1 id="title">PANDA<br><em>PANIC<span>.</span></em></h1>
+    <p>Build a shelter. Dodge the pineapples.<br>Whatever you do, don't pet the pandas.</p>
+    <button id="play">ENTER THE VALLEY <span>↗</span></button>
+    <div class="intro-hint" id="intro-hint">WASD to move <b>·</b> Mouse to look <b>·</b> 1–5 to equip</div>
+  </section>
+  <footer class="hud">
+    <div class="vitals"><span>VITALS</span><div id="hearts" aria-label="Health">♥ ♥ ♥ ♥ ♥</div></div>
+    <div class="inventory"><div id="equipped">WOODEN SWORD</div><div id="slots"></div></div>
+    <div class="bindings"><div><kbd>LMB</kbd> Swing / break</div><div><kbd>RMB</kbd> Place / block</div></div>
+  </footer>
+  <div id="touch" aria-label="Touch controls">
+    <div id="stick" aria-label="Movement joystick"><div id="knob"></div></div>
+    <div class="touch-actions"><button data-action="jump">↑<small>Jump</small></button><button data-action="primary">✦<small>Hit</small></button><button data-action="secondary">＋<small>Use</small></button></div>
+  </div>
+  <div id="feedback" role="status"></div>
+</main>
+</body>
+</html>

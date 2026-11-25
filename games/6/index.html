@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Pandamonium: Block Siege</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="game"></canvas>
+<div id="hud">
+  <div id="crosshair"></div>
+  <div id="topbar">
+    <div id="hearts"></div>
+    <div id="stats"><span id="wave">Wave 0</span> &middot; <span id="alive">Pandas: 0</span> &middot; <span id="score">Defeated: 0</span></div>
+  </div>
+  <div id="msg"></div>
+  <div id="itemname"></div>
+  <div id="charge"><div id="chargefill"></div></div>
+  <div id="hotbar"></div>
+</div>
+<div id="flash"></div>
+<div id="touch">
+  <div id="joy"><div id="knob"></div></div>
+  <div class="tbtn" id="bHit">Hit<br><small>break</small></div>
+  <div class="tbtn" id="bUse">Use<br><small>place</small></div>
+  <div class="tbtn" id="bJump">Jump</div>
+  <div class="tbtn small" id="bPause">II</div>
+</div>
+<div id="overlay"><div id="panel"></div></div>
+<script src="game.js"></script>
+</body>
+</html>

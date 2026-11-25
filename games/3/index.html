@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <title>Pineapple Panda Siege</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="c"></canvas>
+
+  <div id="hud">
+    <div id="hearts"></div>
+    <div id="score">Pandas defeated: 0</div>
+    <div id="crosshair"></div>
+    <div id="flash"></div>
+    <div id="hotbar"></div>
+  </div>
+
+  <div id="touch" class="hidden">
+    <div id="touchLook"></div>
+    <div id="joy"><div id="knob"></div></div>
+    <button id="bAct" class="tbtn big">Hit<br>Break</button>
+    <button id="bUse" class="tbtn">Place</button>
+    <button id="bShield" class="tbtn">Shield</button>
+    <button id="bJump" class="tbtn">Jump</button>
+  </div>
+
+  <div id="menu">
+    <div class="card">
+      <h1>Pineapple Panda Siege</h1>
+      <p><b>Goal:</b> the pandas throw pineapples at you. Break blocks, build walls, and fight back.</p>
+      <p><b>Desktop:</b> WASD move, Space jump, mouse look (click the game to lock the mouse),
+        left click break / hit / fire, right click place a block or hold the shield,
+        F holds the shield, keys 1-9 or the mouse wheel pick an item, Esc pauses.</p>
+      <p><b>Phone or tablet:</b> left stick moves, drag the right side of the screen to look,
+        Hit/Break and Place act on the block in the crosshair, hold Shield to block, Jump jumps.
+        Tap a slot in the bar to pick an item.</p>
+      <p><b>Items:</b> 1-6 blocks, 7 sword (close range), 8 slingshot (ranged), 9 shield (blocks pineapples in front of you).</p>
+      <button id="startBtn" class="primary">Start</button>
+    </div>
+  </div>
+
+  <div id="dead" class="hidden">
+    <div class="card">
+      <h2>Splatted!</h2>
+      <p id="deadScore"></p>
+      <button id="respawnBtn" class="primary">Respawn</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
