@@ -9,6 +9,22 @@
    "ranked": 0,
    "games": [
     {
+     "id": 15,
+     "path": "games/15/index.html",
+     "model": "k3.1-pro",
+     "harness": "pi",
+     "run": 7,
+     "date": "2026-11-25",
+     "status": "done",
+     "seconds": 2059.4,
+     "tokens_in": null,
+     "tokens_out": null,
+     "place": null,
+     "likes": 0,
+     "dislikes": 0,
+     "bytes": 1338584
+    },
+    {
      "id": 12,
      "path": "games/12/index.html",
      "model": "gpt-6.2-sol",

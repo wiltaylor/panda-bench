@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#152e2a" />
+  <title>Panda Pandemonium — Voxel Survival</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 21S3 15.5 3 8.8C3 4.5 8.2 2.6 12 6.4 15.8 2.6 21 4.5 21 8.8 21 15.5 12 21 12 21Z"/></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2 20 5v6c0 5.2-3.4 8.8-8 11-4.6-2.2-8-5.8-8-11V5l8-3Z"/><path d="m8.5 12 2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+      <symbol id="i-sword" viewBox="0 0 24 24"><path d="m14 4 6-2-2 6L9 17l-3-3L14 4Z"/><path d="m4 14 6 6M4 20l3-3M3 17l4 4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+      <symbol id="i-bow" viewBox="0 0 24 24"><path d="M5 3c9 1 15 7 16 16M5 3c1 9 7 15 16 16M5 3 3 5m18 16-2-2M4 20 18 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="m14 6 4 0 0 4" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+      <symbol id="i-cube" viewBox="0 0 24 24"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5Z"/><path d="m3 7 9 5 9-5M12 12v10" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+      <symbol id="i-pause" viewBox="0 0 24 24"><path d="M7 5h3v14H7zm7 0h3v14h-3z"/></symbol>
+      <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M16 8c2 2 2 6 0 8m3-11c4 4 4 10 0 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-hand" viewBox="0 0 24 24"><path d="M8 12V5a2 2 0 0 1 4 0v6-8a2 2 0 0 1 4 0v8-5a2 2 0 0 1 4 0v8c0 5-3 8-8 8-3 0-5-2-7-5l-3-5a2 2 0 0 1 3-2l3 2Z"/></symbol>
+      <symbol id="i-jump" viewBox="0 0 24 24"><path d="m5 15 7-7 7 7M12 8v13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-pineapple" viewBox="0 0 24 24"><path d="M10 8C7 5 8 2 8 2l4 4 1-5 2 5 4-3-1 5"/><path d="M7 9c0-2 10-2 10 0l1 7c0 6-12 6-12 0l1-7Z"/><path d="m7 11 10 7m0-7L7 18" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
+    </defs>
+  </svg>
+
+  <main id="game" aria-label="Panda Pandemonium voxel survival game">
+    <div id="world"></div>
+    <div class="world-shade"></div>
+    <div id="damage-flash"></div>
+
+    <section id="intro" class="overlay active" aria-labelledby="game-title">
+      <div class="intro-topbar">
+        <div class="mini-brand"><span class="panda-mark"><i></i><b></b><i></i></span> BLOCKWILD <span>STUDIOS</span></div>
+        <button id="intro-sound" class="icon-button glass" aria-label="Toggle sound"><svg><use href="#i-sound"/></svg></button>
+      </div>
+      <div class="intro-content">
+        <div class="eyebrow"><span></span> A TINY VOXEL SURVIVAL ADVENTURE</div>
+        <h1 id="game-title">PANDA<br><em>PANDEMONIUM</em></h1>
+        <p class="intro-copy">Build a little shelter. Brave the bamboo wilds.<br>And watch out for flying pineapples.</p>
+        <button id="start-button" class="primary-button"><span>ENTER THE ISLAND</span><svg><use href="#i-arrow"/></svg></button>
+        <div class="save-note"><span class="status-dot"></span> WORLD READY <b>•</b> NO DOWNLOADS <b>•</b> JUST CHAOS</div>
+      </div>
+      <div class="field-guide">
+        <div class="guide-heading"><span>FIELD GUIDE</span><small>01 / SURVIVAL</small></div>
+        <div class="guide-row"><div class="key-pair"><kbd>W</kbd><span><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span></div><div><strong>ROAM THE WILD</strong><p>Move, jump & explore</p></div></div>
+        <div class="guide-row"><div class="mouse-icon"><span></span></div><div><strong>MINE & MAKE</strong><p>Left mine · Right place</p></div></div>
+        <div class="guide-row"><div class="guide-symbol"><svg><use href="#i-shield"/></svg></div><div><strong>HOLD YOUR GROUND</strong><p><kbd>F</kbd> shield · <kbd>1—5</kbd> tools</p></div></div>
+        <div class="mobile-guide">Touch controls appear automatically on mobile.</div>
+      </div>
+      <div class="intro-footer"><span>PROCEDURALLY CRAFTED • ENDLESSLY SILLY</span><span>v1.0.0</span></div>
+    </section>
+
+    <section id="hud" class="hidden" aria-label="Game heads-up display">
+      <header class="hud-top">
+        <div class="brand-card hud-panel">
+          <span class="panda-mark"><i></i><b></b><i></i></span>
+          <div><strong>PANDA<br><em>PANDEMONIUM</em></strong><small>BAMBOO ISLES</small></div>
+        </div>
+        <div class="wave-card hud-panel"><small id="day-label">DAY 01</small><strong id="wave-label">WAVE 1</strong><span><i></i><b id="enemy-count">3 PANDAS NEARBY</b></span></div>
+        <div class="map-wrap">
+          <div class="map-ring"><canvas id="minimap" width="180" height="180" aria-label="Island minimap"></canvas><span class="map-north">N</span><i class="map-tick t1"></i><i class="map-tick t2"></i><i class="map-tick t3"></i><i class="map-tick t4"></i></div>
+          <div class="map-actions"><button id="sound-button" class="icon-button hud-panel" aria-label="Toggle sound"><svg><use href="#i-sound"/></svg></button><button id="pause-button" class="icon-button hud-panel" aria-label="Pause game"><svg><use href="#i-pause"/></svg></button></div>
+        </div>
+      </header>
+
+      <aside class="quest-card hud-panel">
+        <div class="quest-title"><span>ISLAND INSTINCTS</span><small>3 TIPS</small></div>
+        <div><i>01</i><p>Mine blocks<br><span>Hold left click</span></p></div>
+        <div><i>02</i><p>Build some cover<br><span>Right click to place</span></p></div>
+        <div><i>03</i><p>Block the fruit<br><span>Hold <kbd>F</kbd> for shield</span></p></div>
+      </aside>
+
+      <div id="event-feed" aria-live="polite"></div>
+      <div id="wave-banner"><small>THE ISLAND STIRS</small><strong>WAVE 1</strong><span>3 pineapple enthusiasts incoming</span></div>
+
+      <div class="crosshair" id="crosshair"><i></i><i></i><i></i><i></i><b></b></div>
+      <div id="target-label"><strong></strong><span></span><div><i></i></div></div>
+      <div id="block-caption">SHIELD UP!</div>
+
+      <footer class="hud-bottom">
+        <div class="vitals hud-panel">
+          <div class="vital-heading"><span><svg><use href="#i-heart"/></svg> HEALTH</span><strong id="health-number">100</strong></div>
+          <div class="health-track"><i id="health-fill"></i></div>
+          <div class="guard-line"><svg><use href="#i-shield"/></svg><span>GUARD</span><div><i id="guard-fill"></i></div><b id="guard-number">100</b></div>
+        </div>
+        <div class="hotbar-wrap">
+          <div id="tool-name"><span>BAMBOO SWORD</span><small>Quick & sturdy</small></div>
+          <div id="hotbar" role="toolbar" aria-label="Tool hotbar">
+            <button class="slot selected" data-slot="0" aria-label="Bamboo sword"><kbd>1</kbd><svg><use href="#i-sword"/></svg><span class="slot-count"></span></button>
+            <button class="slot" data-slot="1" aria-label="Seed bow"><kbd>2</kbd><svg><use href="#i-bow"/></svg><span class="slot-count">∞</span></button>
+            <button class="slot" data-slot="2" aria-label="Bamboo shield"><kbd>3</kbd><svg><use href="#i-shield"/></svg><span class="slot-count"></span></button>
+            <button class="slot block-slot dirt" data-slot="3" aria-label="Place dirt blocks"><kbd>4</kbd><i class="block-icon"></i><span class="slot-count" id="dirt-count">24</span></button>
+            <button class="slot block-slot stone" data-slot="4" aria-label="Place stone blocks"><kbd>5</kbd><i class="block-icon"></i><span class="slot-count" id="stone-count">16</span></button>
+          </div>
+          <div class="desktop-hints"><span><b>LMB</b> MINE / ATTACK</span><i></i><span><b>RMB</b> PLACE</span><i></i><span><b>SPACE</b> JUMP</span></div>
+        </div>
+        <div class="score-card hud-panel"><span><svg><use href="#i-pineapple"/></svg></span><div><small>PANDAS BONKED</small><strong id="score">00</strong></div></div>
+      </footer>
+    </section>
+
+    <section id="touch-controls" class="hidden" aria-label="Touch controls">
+      <div id="joystick"><div class="joystick-arrows">••••</div><div id="joystick-knob"></div></div>
+      <div id="look-zone"></div>
+      <div class="touch-actions">
+        <button id="touch-shield" class="touch-button small" aria-label="Hold shield"><svg><use href="#i-shield"/></svg><span>BLOCK</span></button>
+        <button id="touch-place" class="touch-button small" aria-label="Place block"><svg><use href="#i-cube"/></svg><span>PLACE</span></button>
+        <button id="touch-jump" class="touch-button small" aria-label="Jump"><svg><use href="#i-jump"/></svg><span>JUMP</span></button>
+        <button id="touch-mine" class="touch-button main" aria-label="Mine or attack"><svg><use href="#i-hand"/></svg><span>MINE</span></button>
+      </div>
+    </section>
+
+    <section id="pause" class="overlay modal-overlay" aria-labelledby="pause-title">
+      <div class="modal-card">
+        <div class="modal-icon"><svg><use href="#i-pause"/></svg></div><small>TAKE A BREATHER</small><h2 id="pause-title">ISLAND PAUSED</h2><p>The pandas promise not to throw anything.<br>Probably.</p>
+        <button id="resume-button" class="primary-button"><span>BACK TO THE WILD</span><svg><use href="#i-arrow"/></svg></button>
+        <button id="restart-button" class="text-button">Restart this world</button>
+        <div class="modal-controls">WASD move · Mouse look · F shield · Esc pause</div>
+      </div>
+    </section>
+
+    <section id="game-over" class="overlay modal-overlay" aria-labelledby="over-title">
+      <div class="modal-card">
+        <div class="modal-icon pineapple"><svg><use href="#i-pineapple"/></svg></div><small>PINEAPPLE: 1 · YOU: 0</small><h2 id="over-title">TOTALLY TROPICAL'D</h2><p>You bonked <strong id="final-score">0 pandas</strong> and survived to wave <strong id="final-wave">1</strong>.</p>
+        <button id="retry-button" class="primary-button"><span>TRY AGAIN</span><svg><use href="#i-arrow"/></svg></button>
+      </div>
+    </section>
+  </main>
+  <script defer src="game.bundle.js"></script>
+</body>
+</html>
