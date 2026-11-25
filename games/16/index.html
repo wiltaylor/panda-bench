@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#14210f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>PandaCraft</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <canvas id="view"></canvas>
+
+  <div id="hud">
+    <canvas id="hearts" width="188" height="18"></canvas>
+    <div id="score">
+      <div id="kills">Pandas routed 0</div>
+      <div id="wave">Wave 1</div>
+    </div>
+    <div id="top-right">
+      <button type="button" id="btn-sound" aria-label="Toggle sound">Sound</button>
+      <button type="button" id="btn-pause" aria-label="Pause">Pause</button>
+    </div>
+    <div id="banner"></div>
+    <div id="hint"></div>
+    <div id="cross"></div>
+    <div id="lockhint">Click the world to capture the mouse</div>
+    <div id="slotname"></div>
+    <div id="hotbar"></div>
+    <div id="joystick" aria-hidden="true">
+      <div id="knob"></div>
+    </div>
+    <div id="actions">
+      <button type="button" id="btn-jump" aria-label="Jump"><b>▲</b><span>Jump</span></button>
+      <button type="button" id="btn-break" aria-label="Break blocks or attack"><b>⛏</b><span>Break</span></button>
+      <button type="button" id="btn-place" aria-label="Place blocks or guard"><b>■</b><span>Place</span></button>
+    </div>
+    <div id="floaters"></div>
+  </div>
+
+  <div id="loading">
+    <p id="loadtext">Waking the pandas…</p>
+  </div>
+
+  <div id="menu" class="overlay">
+    <div class="panel">
+      <p class="eyebrow">A blocky survival sketch</p>
+      <h1>PandaCraft</h1>
+      <p class="tag">Pandas throw pineapples. Break and place blocks. Guard with the stone sword and send the fruit back.</p>
+      <button type="button" id="play">Play</button>
+      <div class="cols">
+        <section>
+          <h2>Desktop</h2>
+          <ul>
+            <li>WASD move, mouse look</li>
+            <li>Space jump, Shift sneak on edges</li>
+            <li>Left click breaks or attacks</li>
+            <li>Right click places</li>
+            <li>Hold right click with the sword to guard</li>
+            <li>Keys 1–9 or the wheel pick the hotbar</li>
+            <li>Esc pauses, F3 shows colliders</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Touch</h2>
+          <ul>
+            <li>Left stick moves</li>
+            <li>Drag the view to look</li>
+            <li>Jump, Break, and Place sit under your thumb</li>
+            <li>Place becomes Guard when the sword is selected</li>
+            <li>Tap the hotbar to switch tools</li>
+          </ul>
+        </section>
+      </div>
+      <p id="seedline" class="fine"></p>
+    </div>
+  </div>
+
+  <div id="pause" class="overlay" hidden>
+    <div class="panel">
+      <h2>Paused</h2>
+      <button type="button" id="resume">Resume</button>
+      <label class="slider">Look sensitivity
+        <input id="sens" type="range" min="0.5" max="2.2" step="0.05" value="1">
+      </label>
+      <label class="check"><input id="invert" type="checkbox"> Invert look up and down</label>
+      <p class="fine">Walls stop pineapples. Leaves do not. A sword swing or a guard sends a pineapple back at the panda who threw it.</p>
+    </div>
+  </div>
+
+  <div id="dead" class="overlay" hidden>
+    <div class="panel">
+      <h2 id="deathtext">A pineapple found you.</h2>
+      <p class="tag">Your blocks and tools are still here.</p>
+      <button type="button" id="respawn">Respawn</button>
+    </div>
+  </div>
+
+  <div id="errmsg" hidden></div>
+  <script src="js/game.js" defer></script>
+</body>
+</html>
