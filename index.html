@@ -21,6 +21,7 @@
   button.primary { background: var(--accent); color: #08110b; border-color: var(--accent); font-weight: 600; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
   .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .shot { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; background: #000; cursor: pointer; display: block; }
   .card h3 { margin: 0; font-size: 18px; word-break: break-word; }
   .place { display: inline-block; min-width: 30px; text-align: center; background: var(--accent); color: #08110b; border-radius: 6px; padding: 0 6px; font-weight: 700; margin-right: 6px; }
   .facts { color: var(--dim); font-size: 14px; }
@@ -71,7 +72,13 @@ $("again").onclick = () => { const src = $("tab").getAttribute("href"); $("frame
 function card(game) {
   const facts = [game.harness, game.date, time(game.seconds) && `built in ${time(game.seconds)}`, count((game.tokens_in ?? 0) + (game.tokens_out ?? 0)) && game.tokens_in != null && `${count(game.tokens_in + (game.tokens_out ?? 0))} tokens`].filter(Boolean).join(" · ");
   const title = el("h3", {}, ...(game.place != null ? [el("span", { className: "place", textContent: `#${game.place}`, title: "The place in the ranking" })] : []), game.model);
-  const node = el("div", { className: "card" }, title, el("div", { className: "facts", textContent: facts }));
+  const node = el("div", { className: "card" });
+  if (game.thumb) {
+    const shot = el("img", { className: "shot", src: game.thumb, alt: `A picture of the game by ${game.model}`, loading: "lazy" });
+    shot.onclick = () => play(game);
+    node.append(shot);
+  }
+  node.append(title, el("div", { className: "facts", textContent: facts }));
   if (game.note) node.append(el("div", { className: "note", textContent: game.note }));
   const playButton = el("button", { className: "primary", textContent: "Play" });
   playButton.onclick = () => play(game);
