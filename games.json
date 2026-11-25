@@ -57,38 +57,6 @@
      "bytes": 377333
     },
     {
-     "id": 10,
-     "path": "games/10/index.html",
-     "model": "gpt-6.2-sol",
-     "harness": "codex",
-     "run": 5,
-     "date": "2026-11-24",
-     "status": "done",
-     "seconds": 325.1,
-     "tokens_in": 467015,
-     "tokens_out": 14006,
-     "place": null,
-     "likes": 0,
-     "dislikes": 0,
-     "bytes": 28216
-    },
-    {
-     "id": 11,
-     "path": "games/11/index.html",
-     "model": "gpt-6.2-astra",
-     "harness": "codex",
-     "run": 5,
-     "date": "2026-11-24",
-     "status": "done",
-     "seconds": 259.6,
-     "tokens_in": 347146,
-     "tokens_out": 9900,
-     "place": null,
-     "likes": 0,
-     "dislikes": 0,
-     "bytes": 141685
-    },
-    {
      "id": 7,
      "path": "games/7/index.html",
      "model": "glm-5.3",
@@ -199,22 +167,6 @@
      "likes": 0,
      "dislikes": 0,
      "bytes": 64125
-    },
-    {
-     "id": 2,
-     "path": "games/2/index.html",
-     "model": "haiku",
-     "harness": null,
-     "run": 2,
-     "date": "2026-11-24",
-     "status": "done",
-     "seconds": 533.0,
-     "tokens_in": 2273573,
-     "tokens_out": 91139,
-     "place": null,
-     "likes": 0,
-     "dislikes": 0,
-     "bytes": 36057
     }
    ]
   }
