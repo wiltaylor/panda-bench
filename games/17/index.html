@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#85cddd">
+<title>Panda Panic — Pineapple Island</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="game"></canvas>
+<div class="shade"></div>
+<header><div class="brand"><span class="brand-icon">✦</span><div><strong>PANDA PANIC</strong><small>PINEAPPLE ISLAND</small></div></div><div class="top-right"><span class="day">☀ &nbsp; DAY 01</span><button id="helpBtn" aria-label="How to play">?</button></div></header>
+<div class="objective"><span class="objective-icon">✦</span><div><small>YOUR MISSION</small><b>Survive the panda party</b><p>Gather blocks. Dodge pineapples. Fight back.</p></div></div>
+<div id="crosshair">+</div><div id="hit"></div>
+<div class="status"><div class="status-label"><span>HEALTH</span><span id="healthText">100 / 100</span></div><div class="health-track"><div id="healthBar"></div></div><div class="score"><span>✦ <b id="score">0</b> PANDAS DEFEATED</span><span id="blockCount">▦ 24 BLOCKS</span></div></div>
+<div class="bottom"><div class="tip" id="tip">Explore the island &amp; keep an eye out for pandas.</div><div class="hotbar" id="hotbar"><button data-slot="0" class="slot active"><span class="number">1</span><span class="item">⚔</span><small>SWORD</small></button><button data-slot="1" class="slot"><span class="number">2</span><span class="item">⛏</span><small>PICKAXE</small></button><button data-slot="2" class="slot"><span class="number">3</span><span class="item block-icon">▦</span><small>BLOCK</small></button></div><div class="desktop-hint"><b>W A S D</b> MOVE <i></i> <b>MOUSE</b> LOOK <i></i> <b>CLICK</b> USE <i></i> <b>RIGHT CLICK</b> PLACE</div></div>
+<div class="touch-controls"><div id="joystick"><div id="stick"></div></div><div class="touch-actions"><button id="breakBtn">⛏<small>BREAK</small></button><button id="placeBtn">▦<small>PLACE</small></button><button id="attackBtn">⚔<small>ATTACK</small></button></div></div>
+<div id="overlay" class="overlay"><div class="dialog"><div class="eyebrow">✦ &nbsp; A LITTLE ISLAND ADVENTURE</div><h1>PANDA<br><em>PANIC</em></h1><p class="intro">A peaceful island. Some not-so-peaceful pandas. And a whole lot of pineapples.</p><div class="rules"><div><span>01</span><p><b>EXPLORE & BUILD</b><br>Break blocks and make the island your own.</p></div><div><span>02</span><p><b>WATCH OUT</b><br>Pandas throw pineapples when you get close.</p></div><div><span>03</span><p><b>FIGHT BACK</b><br>Use your sword to send them packing.</p></div></div><button id="start">LET'S PLAY <span>→</span></button><div class="dialog-foot">WASD + MOUSE TO MOVE & LOOK &nbsp; · &nbsp; TOUCH CONTROLS ON MOBILE</div></div></div>
+<div id="toast"></div>
+<script src="game.js"></script>
+</body></html>
